@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Providers } from '@/components/providers';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
 const geistSans = Geist({
@@ -58,7 +59,8 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: 'VEXYL',
     title: 'VEXYL | Solana Portfolio OS',
-    description: 'Your portfolio story, told through time. A cyberpunk timeline-first portfolio tracker for Solana.',
+    description:
+      'Your portfolio story, told through time. A cyberpunk timeline-first portfolio tracker for Solana.',
     images: [
       {
         url: '/og-image.png',
@@ -71,7 +73,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'VEXYL | Solana Portfolio OS',
-    description: 'Your portfolio story, told through time. A cyberpunk timeline-first portfolio tracker for Solana.',
+    description:
+      'Your portfolio story, told through time. A cyberpunk timeline-first portfolio tracker for Solana.',
     images: ['/og-image.png'],
     creator: '@vexyl_io',
   },
@@ -102,7 +105,8 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
   name: 'VEXYL',
-  description: 'Your portfolio story, told through time. A cyberpunk timeline-first portfolio tracker for Solana.',
+  description:
+    'Your portfolio story, told through time. A cyberpunk timeline-first portfolio tracker for Solana.',
   url: SITE_URL,
   applicationCategory: 'FinanceApplication',
   operatingSystem: 'Web',
@@ -137,7 +141,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <Analytics />
+        </Providers>
       </body>
     </html>
   );
