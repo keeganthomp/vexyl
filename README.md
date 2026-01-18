@@ -1,4 +1,4 @@
-# Chronos
+# Vexyl
 
 A Solana portfolio tracker with a cyberpunk aesthetic. Track your wallets, visualize transaction history, get AI-powered insights, and reclaim SOL from dust accounts.
 
