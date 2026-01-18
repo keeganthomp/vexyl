@@ -1,0 +1,6 @@
+# VEXYL - Solana Portfolio OS
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://vexyl.io/sitemap.xml

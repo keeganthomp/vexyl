@@ -1,26 +1,392 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+/* VEXYL - Cyberpunk Premium Interface */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core Background - Deep cold space */
+  --background: #050a12;
+  --background-secondary: #0a1018;
+  --background-tertiary: #0f1520;
+
+  /* Foreground - Cool, readable */
+  --foreground: #d0d8e0;
+  --foreground-muted: #8090a0;
+  --foreground-subtle: #506070;
+
+  /* Primary Accent - Rare cyan pop */
+  --primary: #00f0ff;
+  --primary-dim: #0088aa;
+  --primary-glow: rgba(0, 240, 255, 0.15);
+
+  /* Secondary - Steel blue */
+  --secondary: #3a6080;
+  --secondary-dim: #2a4560;
+
+  /* Panel colors - Glass steel */
+  --panel-bg: rgba(10, 20, 35, 0.85);
+  --panel-border: rgba(60, 100, 140, 0.2);
+  --panel-hover: rgba(15, 30, 50, 0.9);
+
+  /* Legacy Solana colors - Toned to palette */
+  --solana-green: #00f0ff;
+  --solana-purple: #6080a0;
+  --solana-gradient: linear-gradient(135deg, #00f0ff 0%, #3a6080 100%);
+
+  /* Accent Colors - Muted, cold */
+  --accent-cyan: #00f0ff;
+  --accent-coral: #ff6080;
+  --accent-yellow: #f0c060;
+  --accent-teal: #40a0a0;
+  --accent-orange: #e08050;
+  --accent-mint: #60c0a0;
+  --accent-indigo: #6080c0;
+
+  /* Transaction Type Colors */
+  --tx-swap: #00f0ff;
+  --tx-transfer: #5090c0;
+  --tx-nft-mint: #8080c0;
+  --tx-nft-sale: #c0a060;
+  --tx-burn: #c06070;
+  --tx-stake: #50a0a0;
+
+  /* Glass Effect */
+  --glass-bg: rgba(20, 40, 60, 0.4);
+  --glass-border: rgba(60, 100, 140, 0.15);
+  --glass-hover: rgba(30, 50, 80, 0.5);
+  --glass-active: rgba(40, 70, 100, 0.6);
+
+  /* Shadows & Glows - Subtle */
+  --glow-primary: 0 0 30px rgba(0, 240, 255, 0.2);
+  --glow-secondary: 0 0 30px rgba(60, 100, 140, 0.2);
+
+  /* Animation */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-background-tertiary: var(--background-tertiary);
+
   --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-subtle: var(--foreground-subtle);
+
+  --color-solana-green: var(--solana-green);
+  --color-solana-purple: var(--solana-purple);
+
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-coral: var(--accent-coral);
+  --color-accent-yellow: var(--accent-yellow);
+  --color-accent-teal: var(--accent-teal);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-mint: var(--accent-mint);
+
+  --color-glass-bg: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
+  --color-glass-hover: var(--glass-hover);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar - Minimal steel */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(60, 100, 140, 0.3);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(60, 100, 140, 0.5);
+}
+
+/* Selection */
+::selection {
+  background: rgba(0, 240, 255, 0.2);
+  color: white;
+}
+
+/* Holographic Panel - Premium glass */
+.holo-panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: relative;
+}
+
+.holo-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.03) 0%,
+    transparent 50%,
+    rgba(60, 100, 140, 0.02) 100%
+  );
+  pointer-events: none;
+}
+
+/* Glass Card */
+.glass-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all var(--transition-normal);
+}
+
+.glass-card:hover {
+  background: var(--glass-hover);
+  border-color: rgba(0, 240, 255, 0.15);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: var(--solana-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Shimmer Loading */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.03), transparent);
+  animation: shimmer 2s infinite;
+}
+
+/* Transaction Indicators */
+.tx-indicator {
+  width: 2px;
+  border-radius: 1px;
+  height: 100%;
+}
+
+/* Focus States */
+:focus-visible {
+  outline: 1px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Utility: Hide Scrollbar */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================
+   CYBERPUNK GLITCH EFFECTS
+   ============================================ */
+
+@keyframes glitch {
+  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+  10% { clip-path: inset(20% 0 60% 0); transform: translate(-2px); }
+  20% { clip-path: inset(80% 0 5% 0); transform: translate(2px); }
+  30% { clip-path: inset(10% 0 70% 0); transform: translate(-1px); }
+  40% { clip-path: inset(50% 0 30% 0); transform: translate(1px); }
+  50% { clip-path: inset(0 0 0 0); transform: translate(0); }
+}
+
+.glitch-text {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-text::before {
+  color: #00f0ff;
+  animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+  z-index: -1;
+}
+
+.glitch-text::after {
+  color: #ff6080;
+  animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+  z-index: -2;
+}
+
+.glitch-text:not(.glitch-active)::before,
+.glitch-text:not(.glitch-active)::after {
+  animation: none;
+  opacity: 0;
+}
+
+/* Scanlines - Very subtle */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.scanlines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.02) 2px,
+    rgba(0, 0, 0, 0.02) 4px
+  );
+}
+
+/* Data bar */
+.data-bar {
+  height: 2px;
+  background: rgba(0, 240, 255, 0.1);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.data-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 1px;
+}
+
+/* Status indicator */
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.status-dot.online {
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--primary);
+}
+
+/* Holographic Card - 3D tilt */
+.holographic-card {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 0.1s ease-out;
+}
+
+.holographic-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(0, 240, 255, 0.1) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.holographic-card:hover::before {
+  opacity: 1;
+}
+
+/* Corner brackets - HUD style */
+.hud-corners {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hud-corners::before,
+.hud-corners::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--primary);
+  border-style: solid;
+  opacity: 0.5;
+}
+
+.hud-corners::before {
+  top: 0;
+  left: 0;
+  border-width: 1px 0 0 1px;
+}
+
+.hud-corners::after {
+  bottom: 0;
+  right: 0;
+  border-width: 0 1px 1px 0;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .glitch-text::before,
+  .glitch-text::after,
+  .shimmer::after {
+    animation: none;
+  }
+}
+
+/* GPU Acceleration */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
 }
