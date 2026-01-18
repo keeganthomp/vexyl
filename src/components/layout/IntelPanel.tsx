@@ -604,7 +604,7 @@ function TransactionDetail({ transaction }: { transaction: ParsedTransaction }) 
 
       {/* Description */}
       <DataField label="DESCRIPTION">
-        <p className="text-xs text-[#8090a0]">
+        <p className="text-xs text-[#8090a0] break-all">
           {transaction.description || 'No description available'}
         </p>
       </DataField>
