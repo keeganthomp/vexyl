@@ -131,7 +131,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" style={{ backgroundColor: '#050a12' }}>
       <head>
         <script
           type="application/ld+json"
