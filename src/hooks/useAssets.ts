@@ -140,9 +140,7 @@ export function useFrozenMints(options: UseAssetsOptions = {}) {
     queryKey: ['frozen-mints', wallets.map((w) => w.address)],
     queryFn: async () => {
       // Fetch frozen mints for all wallets in parallel
-      const results = await Promise.all(
-        wallets.map((w) => getFrozenTokenMints(w.address))
-      );
+      const results = await Promise.all(wallets.map((w) => getFrozenTokenMints(w.address)));
 
       // Combine all frozen mints into a Set
       const allFrozen = new Set<string>();

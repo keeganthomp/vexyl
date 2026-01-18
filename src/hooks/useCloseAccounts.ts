@@ -73,8 +73,7 @@ export function useCloseAccounts() {
         for (const token of tokens) {
           const instructions: TransactionInstruction[] = [];
           const mintPubkey = new PublicKey(token.mint);
-          const isToken2022 =
-            token.tokenProgram === 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb';
+          const isToken2022 = token.tokenProgram === 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb';
           const programId = isToken2022 ? TOKEN_2022_PROGRAM_ID : TOKEN_PROGRAM_ID;
 
           const tokenAccountPubkey = getAssociatedTokenAddressSync(
@@ -100,13 +99,7 @@ export function useCloseAccounts() {
 
           // Close the account
           instructions.push(
-            createCloseAccountInstruction(
-              tokenAccountPubkey,
-              publicKey,
-              publicKey,
-              [],
-              programId
-            )
+            createCloseAccountInstruction(tokenAccountPubkey, publicKey, publicKey, [], programId)
           );
 
           tokenInstructions.push({ token, instructions });

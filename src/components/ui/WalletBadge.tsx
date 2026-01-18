@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWalletStore, useWallets } from '@/store/wallet';
-import { truncateAddress, copyToClipboard, getSolanaExplorerUrl } from '@/lib/utils';
+import { truncateAddress, copyToClipboard, getSolanaExplorerUrl, cn } from '@/lib/utils';
 import type { Wallet } from '@/types';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 
 interface WalletBadgeProps {
   wallet: Wallet;
@@ -17,6 +18,7 @@ function SingleWalletBadge({ wallet, isPrimary, showActions = true }: WalletBadg
   const [isEditing, setIsEditing] = useState(false);
   const [editLabel, setEditLabel] = useState(wallet.label);
   const [copied, setCopied] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleCopy = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -70,13 +72,18 @@ function SingleWalletBadge({ wallet, isPrimary, showActions = true }: WalletBadg
         </button>
       </div>
 
-      {/* Actions */}
+      {/* Actions - always visible on mobile, hover on desktop */}
       {showActions && (
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div
+          className={cn(
+            'flex items-center gap-1 transition-opacity',
+            !isMobile && 'opacity-0 group-hover:opacity-100'
+          )}
+        >
           {!isPrimary && (
             <button
               onClick={() => setPrimaryWallet(wallet.address)}
-              className="p-1.5 rounded-lg hover:bg-glass-hover text-foreground-subtle hover:text-foreground transition-colors"
+              className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-glass-hover text-foreground-subtle hover:text-foreground transition-colors"
               title="Set as primary"
             >
               ☆
@@ -84,14 +91,14 @@ function SingleWalletBadge({ wallet, isPrimary, showActions = true }: WalletBadg
           )}
           <button
             onClick={() => window.open(getSolanaExplorerUrl(wallet.address, 'address'), '_blank')}
-            className="p-1.5 rounded-lg hover:bg-glass-hover text-foreground-subtle hover:text-foreground transition-colors"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-glass-hover text-foreground-subtle hover:text-foreground transition-colors"
             title="View on Solscan"
           >
             ↗
           </button>
           <button
             onClick={() => removeWallet(wallet.address)}
-            className="p-1.5 rounded-lg hover:bg-accent-coral/20 text-foreground-subtle hover:text-accent-coral transition-colors"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg hover:bg-accent-coral/20 text-foreground-subtle hover:text-accent-coral transition-colors"
             title="Remove wallet"
           >
             ×

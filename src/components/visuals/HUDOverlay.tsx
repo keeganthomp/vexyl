@@ -58,12 +58,7 @@ export function HUDOverlay({
           {/* Top Left */}
           <div className="absolute top-4 left-4">
             <svg width="60" height="60" className="text-solana-green/60">
-              <path
-                d="M 0 20 L 0 0 L 20 0"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
+              <path d="M 0 20 L 0 0 L 20 0" fill="none" stroke="currentColor" strokeWidth="2" />
               <path
                 d="M 0 25 L 0 5 L 5 5"
                 fill="none"
@@ -77,36 +72,21 @@ export function HUDOverlay({
           {/* Top Right */}
           <div className="absolute top-4 right-4">
             <svg width="60" height="60" className="text-solana-green/60">
-              <path
-                d="M 60 20 L 60 0 L 40 0"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
+              <path d="M 60 20 L 60 0 L 40 0" fill="none" stroke="currentColor" strokeWidth="2" />
             </svg>
           </div>
 
           {/* Bottom Left */}
           <div className="absolute bottom-4 left-4">
             <svg width="60" height="60" className="text-solana-green/60">
-              <path
-                d="M 0 40 L 0 60 L 20 60"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
+              <path d="M 0 40 L 0 60 L 20 60" fill="none" stroke="currentColor" strokeWidth="2" />
             </svg>
           </div>
 
           {/* Bottom Right */}
           <div className="absolute bottom-4 right-4">
             <svg width="60" height="60" className="text-solana-green/60">
-              <path
-                d="M 60 40 L 60 60 L 40 60"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
+              <path d="M 60 40 L 60 60 L 40 60" fill="none" stroke="currentColor" strokeWidth="2" />
             </svg>
           </div>
         </>

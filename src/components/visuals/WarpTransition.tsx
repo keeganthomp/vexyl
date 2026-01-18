@@ -80,9 +80,10 @@ export function WarpTransition({ isActive, onComplete, duration = 1200 }: WarpTr
       const progress = Math.min(elapsed / duration, 1);
 
       // Easing - slow start, accelerate, then slow at end
-      const easeProgress = progress < 0.5
-        ? 4 * progress * progress * progress
-        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+      const easeProgress =
+        progress < 0.5
+          ? 4 * progress * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
       // Clear to void
       ctx.fillStyle = COLORS.void;
@@ -157,8 +158,12 @@ export function WarpTransition({ isActive, onComplete, duration = 1200 }: WarpTr
       // Central void / event horizon
       const voidRadius = 20 + easeProgress * 150;
       const voidGradient = ctx.createRadialGradient(
-        centerX, centerY, 0,
-        centerX, centerY, voidRadius * 2
+        centerX,
+        centerY,
+        0,
+        centerX,
+        centerY,
+        voidRadius * 2
       );
       voidGradient.addColorStop(0, COLORS.void);
       voidGradient.addColorStop(0.3, COLORS.void);
@@ -191,8 +196,12 @@ export function WarpTransition({ isActive, onComplete, duration = 1200 }: WarpTr
 
       // Vignette overlay
       const vignetteGradient = ctx.createRadialGradient(
-        centerX, centerY, 0,
-        centerX, centerY, maxRadius
+        centerX,
+        centerY,
+        0,
+        centerX,
+        centerY,
+        maxRadius
       );
       vignetteGradient.addColorStop(0, 'transparent');
       vignetteGradient.addColorStop(0.5, 'transparent');

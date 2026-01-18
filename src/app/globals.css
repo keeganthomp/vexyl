@@ -390,3 +390,109 @@ body {
   will-change: transform;
   backface-visibility: hidden;
 }
+
+/* ============================================
+   MOBILE UTILITIES
+   ============================================ */
+
+/* Touch targets - ensure minimum 44px for accessibility */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Safe area padding for notched devices */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-area-right {
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Mobile-specific overscroll behavior */
+.overscroll-contain {
+  overscroll-behavior: contain;
+}
+
+/* Prevent text selection on mobile for UI elements */
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Mobile tap highlight removal */
+.no-tap-highlight {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Better mobile scrolling */
+.smooth-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile responsive breakpoints */
+@media (max-width: 767px) {
+  /* Hide elements on mobile */
+  .hide-mobile {
+    display: none !important;
+  }
+
+  /* Reduce padding on mobile */
+  .p-responsive {
+    padding: 1rem;
+  }
+
+  /* Smaller text on mobile */
+  .text-responsive {
+    font-size: 0.875rem;
+  }
+
+  /* Full width on mobile */
+  .w-full-mobile {
+    width: 100%;
+  }
+
+  /* Stack flex items on mobile */
+  .flex-col-mobile {
+    flex-direction: column;
+  }
+
+  /* Reduce gap on mobile */
+  .gap-responsive {
+    gap: 0.5rem;
+  }
+
+  /* Hide scrollbar on mobile for cleaner look */
+  .hide-scrollbar-mobile {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar-mobile::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Desktop-only visibility */
+@media (min-width: 768px) {
+  .hide-desktop {
+    display: none !important;
+  }
+
+  .show-desktop {
+    display: block;
+  }
+}

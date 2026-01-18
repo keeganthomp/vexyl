@@ -14,6 +14,7 @@ import {
 } from '@/lib/utils';
 import type { ParsedTransaction } from '@/types';
 import { useState, useEffect, useMemo } from 'react';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 
 interface TransactionCardProps {
   transaction: ParsedTransaction;
@@ -27,8 +28,8 @@ function getSimpleSummary(tx: ParsedTransaction): { action: string; detail: stri
 
   // Handle swaps
   if (type === 'SWAP') {
-    const tokenIn = tx.tokenTransfers.find(t => t.tokenAmount < 0);
-    const tokenOut = tx.tokenTransfers.find(t => t.tokenAmount > 0);
+    const tokenIn = tx.tokenTransfers.find((t) => t.tokenAmount < 0);
+    const tokenOut = tx.tokenTransfers.find((t) => t.tokenAmount > 0);
     if (tokenIn && tokenOut) {
       return {
         action: 'Swapped',
@@ -105,6 +106,7 @@ export function TransactionCard({ transaction, style, index = 0 }: TransactionCa
   const { setHoveredTransaction, setSelectedTransaction } = useWalletStore();
   const [copied, setCopied] = useState(false);
   const [isNew, setIsNew] = useState(false);
+  const isMobile = useIsMobile();
 
   const typeInfo = getTransactionTypeInfo(transaction.type);
 
@@ -200,13 +202,9 @@ export function TransactionCard({ transaction, style, index = 0 }: TransactionCa
           <div className="flex-1 min-w-0">
             {/* Action + Detail */}
             <div className="flex items-baseline gap-2">
-              <span className="text-sm font-medium text-[#d0d8e0]">
-                {summary.action}
-              </span>
+              <span className="text-sm font-medium text-[#d0d8e0]">{summary.action}</span>
               {summary.detail && (
-                <span className="text-xs text-[#506070] truncate">
-                  {summary.detail}
-                </span>
+                <span className="text-xs text-[#506070] truncate">{summary.detail}</span>
               )}
             </div>
 
@@ -223,16 +221,24 @@ export function TransactionCard({ transaction, style, index = 0 }: TransactionCa
                   </span>
                 </>
               )}
-              {/* Signature - show on hover */}
+              {/* Action buttons - always visible on mobile, hover on desktop */}
               <button
                 onClick={handleCopySignature}
-                className="text-[10px] text-[#3a4a5a] hover:text-[#00f0ff] transition-colors opacity-0 group-hover:opacity-100"
+                className={cn(
+                  'text-[10px] text-[#3a4a5a] hover:text-[#00f0ff] transition-colors',
+                  'min-w-[44px] min-h-[44px] -m-2 flex items-center justify-center',
+                  !isMobile && 'opacity-0 group-hover:opacity-100'
+                )}
               >
                 {copied ? '✓' : truncateAddress(transaction.signature, 4)}
               </button>
               <button
                 onClick={handleOpenExplorer}
-                className="text-[10px] text-[#3a4a5a] hover:text-[#00f0ff] transition-colors opacity-0 group-hover:opacity-100"
+                className={cn(
+                  'text-[10px] text-[#3a4a5a] hover:text-[#00f0ff] transition-colors',
+                  'min-w-[44px] min-h-[44px] -m-2 flex items-center justify-center',
+                  !isMobile && 'opacity-0 group-hover:opacity-100'
+                )}
               >
                 ↗
               </button>
@@ -248,11 +254,13 @@ export function TransactionCard({ transaction, style, index = 0 }: TransactionCa
                   netSolChange > 0 ? 'text-[#00f0ff]' : 'text-[#ff6080]'
                 )}
               >
-                {netSolChange > 0 ? '+' : ''}{formatSol(lamportsToSol(netSolChange))}
+                {netSolChange > 0 ? '+' : ''}
+                {formatSol(lamportsToSol(netSolChange))}
               </span>
             ) : transaction.tokenTransfers.length > 0 ? (
               <span className="text-sm font-mono text-[#5090c0]">
-                {transaction.tokenTransfers.length} token{transaction.tokenTransfers.length !== 1 ? 's' : ''}
+                {transaction.tokenTransfers.length} token
+                {transaction.tokenTransfers.length !== 1 ? 's' : ''}
               </span>
             ) : (
               <span className="text-xs text-[#3a4a5a]">—</span>

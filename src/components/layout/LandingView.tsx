@@ -16,8 +16,10 @@ interface LandingViewProps {
 
 // Wallet icons
 const WALLET_ICONS: Record<string, string> = {
-  Phantom: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiBmaWxsPSJub25lIj48cmVjdCB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgZmlsbD0iIzU1MURGRiIgcng9IjY0Ii8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTExMC40IDY0YzAtMjUuNy0yMC44LTQ2LjYtNDYuNC00Ni42UzE3LjYgMzguMyAxNy42IDY0YzAgMjUuNyAyMC44IDQ2LjYgNDYuNCA0Ni42IDcuMiAwIDE0LTEuNiAyMC4xLTQuNWwyLjcgMTEuOWg5LjdsLTQuMi0xOC40YzguNC04LjUgMTguMS0yMC4zIDE4LjEtMzUuNlptLTQ2LjQgMzVjLTE5LjMgMC0zNC44LTE1LjctMzQuOC0zNVM0NC43IDI5IDY0IDI5czM0LjggMTUuNyAzNC44IDM1LTE1LjUgMzUtMzQuOCAzNVoiLz48Y2lyY2xlIGN4PSI1MiIgY3k9IjU4IiByPSI4IiBmaWxsPSIjZmZmIi8+PGNpcmNsZSBjeD0iNzYiIGN5PSI1OCIgcj0iOCIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==',
-  Solflare: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkY5OTAwIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRkY1NTAwIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9InVybCgjYSkiLz48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTYgNmwtNiAxMCA2IDRWNnptMCAxNGw2LTQtNi0xMHYxNHoiLz48L3N2Zz4=',
+  Phantom:
+    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjgiIGhlaWdodD0iMTI4IiBmaWxsPSJub25lIj48cmVjdCB3aWR0aD0iMTI4IiBoZWlnaHQ9IjEyOCIgZmlsbD0iIzU1MURGRiIgcng9IjY0Ii8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTExMC40IDY0YzAtMjUuNy0yMC44LTQ2LjYtNDYuNC00Ni42UzE3LjYgMzguMyAxNy42IDY0YzAgMjUuNyAyMC44IDQ2LjYgNDYuNCA0Ni42IDcuMiAwIDE0LTEuNiAyMC4xLTQuNWwyLjcgMTEuOWg5LjdsLTQuMi0xOC40YzguNC04LjUgMTguMS0yMC4zIDE4LjEtMzUuNlptLTQ2LjQgMzVjLTE5LjMgMC0zNC44LTE1LjctMzQuOC0zNVM0NC43IDI5IDY0IDI5czM0LjggMTUuNyAzNC44IDM1LTE1LjUgMzUtMzQuOCAzNVoiLz48Y2lyY2xlIGN4PSI1MiIgY3k9IjU4IiByPSI4IiBmaWxsPSIjZmZmIi8+PGNpcmNsZSBjeD0iNzYiIGN5PSI1OCIgcj0iOCIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==',
+  Solflare:
+    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRkY5OTAwIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRkY1NTAwIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9InVybCgjYSkiLz48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTYgNmwtNiAxMCA2IDRWNnptMCAxNGw2LTQtNi0xMHYxNHoiLz48L3N2Zz4=',
 };
 
 export function LandingView({ onLaunch }: LandingViewProps) {
@@ -51,11 +53,7 @@ export function LandingView({ onLaunch }: LandingViewProps) {
     <div className="min-h-screen relative overflow-hidden bg-[#050a12]">
       {/* WebGL HoloDeck Background */}
       {isMounted && (
-        <Suspense
-          fallback={
-            <div className="absolute inset-0" style={{ background: '#050a12' }} />
-          }
-        >
+        <Suspense fallback={<div className="absolute inset-0" style={{ background: '#050a12' }} />}>
           <HoloDeck className="absolute inset-0">
             {/* Content overlay */}
             <div className="min-h-screen flex flex-col items-center justify-center p-8 relative">
@@ -69,7 +67,9 @@ export function LandingView({ onLaunch }: LandingViewProps) {
                 >
                   <div className="w-1 h-6 bg-gradient-to-b from-[#00f0ff] to-transparent" />
                   <div>
-                    <div className="text-[9px] font-mono text-[#506070] tracking-widest">SYSTEM</div>
+                    <div className="text-[9px] font-mono text-[#506070] tracking-widest">
+                      SYSTEM
+                    </div>
                     <div className="text-[10px] font-mono text-[#00f0ff]">READY</div>
                   </div>
                 </motion.div>
@@ -83,7 +83,9 @@ export function LandingView({ onLaunch }: LandingViewProps) {
                   className="flex items-center gap-2"
                 >
                   <div className="text-right">
-                    <div className="text-[9px] font-mono text-[#506070] tracking-widest">NETWORK</div>
+                    <div className="text-[9px] font-mono text-[#506070] tracking-widest">
+                      NETWORK
+                    </div>
                     <div className="text-[10px] font-mono text-[#00f0ff]">MAINNET</div>
                   </div>
                   <div className="w-1 h-6 bg-gradient-to-b from-transparent to-[#00f0ff]" />
@@ -108,7 +110,8 @@ export function LandingView({ onLaunch }: LandingViewProps) {
                     <motion.div
                       className="w-16 h-16 rounded flex items-center justify-center text-3xl font-bold relative"
                       style={{
-                        background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.2) 0%, rgba(60, 100, 140, 0.2) 100%)',
+                        background:
+                          'linear-gradient(135deg, rgba(0, 240, 255, 0.2) 0%, rgba(60, 100, 140, 0.2) 100%)',
                         border: '1px solid rgba(0, 240, 255, 0.4)',
                       }}
                       whileHover={{ scale: 1.05 }}
@@ -169,7 +172,8 @@ export function LandingView({ onLaunch }: LandingViewProps) {
                   disabled={connecting}
                   className="group relative px-8 py-4 rounded font-mono text-sm tracking-wider transition-all disabled:opacity-50"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(0, 180, 200, 0.1) 100%)',
+                    background:
+                      'linear-gradient(135deg, rgba(0, 240, 255, 0.15) 0%, rgba(0, 180, 200, 0.1) 100%)',
                     border: '1px solid rgba(0, 240, 255, 0.4)',
                   }}
                   whileHover={{
@@ -188,7 +192,8 @@ export function LandingView({ onLaunch }: LandingViewProps) {
                   <div
                     className="absolute inset-0 rounded opacity-0 group-hover:opacity-100 transition-opacity"
                     style={{
-                      background: 'radial-gradient(circle at center, rgba(0, 240, 255, 0.1) 0%, transparent 70%)',
+                      background:
+                        'radial-gradient(circle at center, rgba(0, 240, 255, 0.1) 0%, transparent 70%)',
                     }}
                   />
 
@@ -217,7 +222,8 @@ export function LandingView({ onLaunch }: LandingViewProps) {
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
                         className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[360px] z-50 rounded-lg overflow-hidden"
                         style={{
-                          background: 'linear-gradient(180deg, rgba(10, 20, 35, 0.98) 0%, rgba(5, 12, 25, 0.99) 100%)',
+                          background:
+                            'linear-gradient(180deg, rgba(10, 20, 35, 0.98) 0%, rgba(5, 12, 25, 0.99) 100%)',
                           border: '1px solid rgba(0, 240, 255, 0.2)',
                           boxShadow: '0 0 60px rgba(0, 240, 255, 0.15)',
                         }}
@@ -237,7 +243,14 @@ export function LandingView({ onLaunch }: LandingViewProps) {
                               onClick={() => setShowWalletList(false)}
                               className="text-[#506070] hover:text-[#00f0ff] transition-colors"
                             >
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <svg
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                              >
                                 <path d="M18 6L6 18M6 6l12 12" />
                               </svg>
                             </button>
@@ -308,7 +321,10 @@ export function LandingView({ onLaunch }: LandingViewProps) {
                 className="absolute bottom-6 text-center z-10"
               >
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#00f0ff]" style={{ boxShadow: '0 0 10px #00f0ff' }} />
+                  <div
+                    className="w-2 h-2 rounded-full bg-[#00f0ff]"
+                    style={{ boxShadow: '0 0 10px #00f0ff' }}
+                  />
                   <span className="text-[9px] font-mono text-[#506070] tracking-widest">
                     POWERED.BY.HELIUS
                   </span>
@@ -369,19 +385,22 @@ function WalletButton({ name, icon, onClick, detected }: WalletButtonProps) {
 
       {/* Name */}
       <div className="flex-1">
-        <div className="text-sm font-mono text-[#d0d8e0] tracking-wider">
-          {name.toUpperCase()}
-        </div>
+        <div className="text-sm font-mono text-[#d0d8e0] tracking-wider">{name.toUpperCase()}</div>
         {detected && (
-          <div className="text-[9px] font-mono text-[#00f0ff] tracking-widest">
-            DETECTED
-          </div>
+          <div className="text-[9px] font-mono text-[#00f0ff] tracking-widest">DETECTED</div>
         )}
       </div>
 
       {/* Arrow */}
       <div className="text-[#506070] group-hover:text-[#00f0ff] transition-colors">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
           <path d="M9 18l6-6-6-6" />
         </svg>
       </div>

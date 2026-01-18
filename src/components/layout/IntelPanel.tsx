@@ -6,6 +6,7 @@ import { useHoveredTransaction, useSelectedTransaction, useWalletStore } from '@
 import { useTransactionInsight, useAnalyzeTransactionsMutation } from '@/hooks/useAnalysis';
 import { useTimelineTransactions } from '@/hooks/useTimeline';
 import { useClusterAssets } from '@/hooks/useAssets';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 import {
   truncateAddress,
   formatDateTime,
@@ -26,6 +27,7 @@ export function IntelPanel() {
   const { transactions } = useTimelineTransactions();
   const { data: assets } = useClusterAssets();
   const [showAnalysis, setShowAnalysis] = useState(false);
+  const isMobile = useIsMobile();
 
   const transaction = selectedTransaction || hoveredTransaction;
 
@@ -38,7 +40,9 @@ export function IntelPanel() {
 
     // Build holdings list from tokens
     const holdings = assets.tokens
-      .filter((t) => t.token_info?.price_info?.total_price && t.token_info.price_info.total_price > 0.01)
+      .filter(
+        (t) => t.token_info?.price_info?.total_price && t.token_info.price_info.total_price > 0.01
+      )
       .map((t) => {
         const balance = (t.token_info?.balance || 0) / Math.pow(10, t.token_info?.decimals || 0);
         const valueUsd = t.token_info?.price_info?.total_price || 0;
@@ -79,36 +83,39 @@ export function IntelPanel() {
 
   return (
     <motion.aside
-      className="w-[320px] h-screen overflow-y-auto relative"
-      style={{
-        background: 'linear-gradient(180deg, rgba(10, 20, 35, 0.95) 0%, rgba(5, 10, 18, 0.98) 100%)',
+      className={isMobile ? 'w-full overflow-y-auto relative' : 'w-[320px] h-screen overflow-y-auto relative'}
+      style={isMobile ? {} : {
+        background:
+          'linear-gradient(180deg, rgba(10, 20, 35, 0.95) 0%, rgba(5, 10, 18, 0.98) 100%)',
         borderLeft: '1px solid rgba(0, 240, 255, 0.1)',
       }}
     >
-      {/* Edge glow */}
-      <div className="absolute top-0 left-0 bottom-0 w-px bg-gradient-to-b from-[#00f0ff]/30 via-transparent to-[#00f0ff]/10" />
+      {/* Edge glow - desktop only */}
+      {!isMobile && (
+        <div className="absolute top-0 left-0 bottom-0 w-px bg-gradient-to-b from-[#00f0ff]/30 via-transparent to-[#00f0ff]/10" />
+      )}
 
-      {/* Header */}
-      <div className="p-4 border-b border-[#00f0ff]/10">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="text-[9px] font-mono text-[#506070] tracking-widest">
-              INTEL.MODULE
+      {/* Header - hide redundant parts on mobile since BottomSheet has title/close */}
+      <div className={isMobile ? 'p-4 pt-0' : 'p-4 border-b border-[#00f0ff]/10'}>
+        {!isMobile && (
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="text-[9px] font-mono text-[#506070] tracking-widest">INTEL.MODULE</div>
             </div>
+            {selectedTransaction && (
+              <button
+                onClick={() => setSelectedTransaction(null)}
+                className="text-[10px] font-mono text-[#506070] hover:text-[#00f0ff] transition-colors tracking-wider"
+              >
+                [ CLEAR ]
+              </button>
+            )}
           </div>
-          {selectedTransaction && (
-            <button
-              onClick={() => setSelectedTransaction(null)}
-              className="text-[10px] font-mono text-[#506070] hover:text-[#00f0ff] transition-colors tracking-wider"
-            >
-              [ CLEAR ]
-            </button>
-          )}
-        </div>
+        )}
 
         {/* Tabs */}
         {transactions.length > 0 && (
-          <div className="mt-3 flex gap-2">
+          <div className={isMobile ? 'flex gap-2' : 'mt-3 flex gap-2'}>
             <TabButton
               active={!showAnalysis}
               onClick={() => setShowAnalysis(false)}
@@ -140,7 +147,15 @@ export function IntelPanel() {
   );
 }
 
-function TabButton({ active, onClick, label }: { active: boolean; onClick: () => void; label: string }) {
+function TabButton({
+  active,
+  onClick,
+  label,
+}: {
+  active: boolean;
+  onClick: () => void;
+  label: string;
+}) {
   return (
     <button
       onClick={onClick}
@@ -171,9 +186,7 @@ function EmptyState() {
       className="p-8 text-center"
     >
       <div className="text-2xl mb-4 opacity-30">◉</div>
-      <p className="text-xs font-mono text-[#506070] tracking-wider">
-        SELECT.TARGET.FOR.ANALYSIS
-      </p>
+      <p className="text-xs font-mono text-[#506070] tracking-wider">SELECT.TARGET.FOR.ANALYSIS</p>
     </motion.div>
   );
 }
@@ -224,7 +237,8 @@ function AIAnalysisView({
               ANALYZE WALLET
             </div>
             <div className="text-[9px] font-mono text-[#405060] mb-4">
-              {transactions.length} TXs{portfolio ? ` · $${portfolio.totalValueUsd.toFixed(0)} Portfolio` : ''}
+              {transactions.length} TXs
+              {portfolio ? ` · $${portfolio.totalValueUsd.toFixed(0)} Portfolio` : ''}
             </div>
             <button
               onClick={handleAnalyze}
@@ -277,7 +291,8 @@ function AIAnalysisView({
             <motion.div
               className="absolute inset-4 rounded-full"
               style={{
-                background: 'radial-gradient(circle, rgba(0, 240, 255, 0.4) 0%, rgba(153, 69, 255, 0.2) 50%, transparent 70%)',
+                background:
+                  'radial-gradient(circle, rgba(0, 240, 255, 0.4) 0%, rgba(153, 69, 255, 0.2) 50%, transparent 70%)',
                 boxShadow: '0 0 30px rgba(0, 240, 255, 0.5), inset 0 0 20px rgba(0, 240, 255, 0.3)',
               }}
               animate={{
@@ -315,7 +330,9 @@ function AIAnalysisView({
           </motion.div>
           <div className="text-[9px] font-mono text-[#506070] mt-2 tracking-wider">
             {mutation.variables?.transactions?.length || 0} TXs
-            {mutation.variables?.portfolio ? ` · $${mutation.variables.portfolio.totalValueUsd.toFixed(0)}` : ''}
+            {mutation.variables?.portfolio
+              ? ` · $${mutation.variables.portfolio.totalValueUsd.toFixed(0)}`
+              : ''}
           </div>
         </div>
       )}
@@ -349,20 +366,34 @@ function AIAnalysisView({
 
           {/* Portfolio Health */}
           {'portfolioAnalysis' in analysis && analysis.portfolioAnalysis && (
-            <HoloCard accent={
-              analysis.portfolioAnalysis.health === 'excellent' ? '#40ff90' :
-              analysis.portfolioAnalysis.health === 'good' ? '#00f0ff' :
-              analysis.portfolioAnalysis.health === 'fair' ? '#ff9040' : '#ff6080'
-            }>
+            <HoloCard
+              accent={
+                analysis.portfolioAnalysis.health === 'excellent'
+                  ? '#40ff90'
+                  : analysis.portfolioAnalysis.health === 'good'
+                    ? '#00f0ff'
+                    : analysis.portfolioAnalysis.health === 'fair'
+                      ? '#ff9040'
+                      : '#ff6080'
+              }
+            >
               <div className="text-[9px] font-mono text-[#506070] tracking-widest mb-2">
                 PORTFOLIO.HEALTH
               </div>
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-sm font-mono uppercase" style={{
-                  color: analysis.portfolioAnalysis.health === 'excellent' ? '#40ff90' :
-                         analysis.portfolioAnalysis.health === 'good' ? '#00f0ff' :
-                         analysis.portfolioAnalysis.health === 'fair' ? '#ff9040' : '#ff6080'
-                }}>
+                <span
+                  className="text-sm font-mono uppercase"
+                  style={{
+                    color:
+                      analysis.portfolioAnalysis.health === 'excellent'
+                        ? '#40ff90'
+                        : analysis.portfolioAnalysis.health === 'good'
+                          ? '#00f0ff'
+                          : analysis.portfolioAnalysis.health === 'fair'
+                            ? '#ff9040'
+                            : '#ff6080',
+                  }}
+                >
                   {analysis.portfolioAnalysis.health}
                 </span>
                 <span className="text-[9px] text-[#506070]">·</span>
@@ -468,7 +499,13 @@ function AIAnalysisView({
   );
 }
 
-function HoloCard({ children, accent = '#00f0ff' }: { children: React.ReactNode; accent?: string }) {
+function HoloCard({
+  children,
+  accent = '#00f0ff',
+}: {
+  children: React.ReactNode;
+  accent?: string;
+}) {
   return (
     <div
       className="p-4 rounded relative"
@@ -478,8 +515,14 @@ function HoloCard({ children, accent = '#00f0ff' }: { children: React.ReactNode;
       }}
     >
       {/* Corner accents */}
-      <div className="absolute top-0 left-0 w-3 h-3 border-t border-l" style={{ borderColor: `${accent}30` }} />
-      <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r" style={{ borderColor: `${accent}30` }} />
+      <div
+        className="absolute top-0 left-0 w-3 h-3 border-t border-l"
+        style={{ borderColor: `${accent}30` }}
+      />
+      <div
+        className="absolute bottom-0 right-0 w-3 h-3 border-b border-r"
+        style={{ borderColor: `${accent}30` }}
+      />
       {children}
     </div>
   );
@@ -494,9 +537,7 @@ function DataField({ label, children }: { label: string; children: React.ReactNo
         border: '1px solid rgba(0, 240, 255, 0.08)',
       }}
     >
-      <div className="text-[9px] font-mono text-[#506070] tracking-widest mb-2">
-        {label}
-      </div>
+      <div className="text-[9px] font-mono text-[#506070] tracking-widest mb-2">{label}</div>
       {children}
     </div>
   );
@@ -544,9 +585,7 @@ function TransactionDetail({ transaction }: { transaction: ParsedTransaction }) 
               {typeInfo.label}
             </div>
             {transaction.source !== 'UNKNOWN' && (
-              <div className="text-[10px] font-mono text-[#506070]">
-                via {sourceInfo.label}
-              </div>
+              <div className="text-[10px] font-mono text-[#506070]">via {sourceInfo.label}</div>
             )}
           </div>
         </div>
@@ -599,9 +638,7 @@ function TransactionDetail({ transaction }: { transaction: ParsedTransaction }) 
 
       {/* Fee */}
       <DataField label="FEE">
-        <div className="text-xs font-mono text-[#00f0ff]">
-          {formatSol(feeInSol, 6)} SOL
-        </div>
+        <div className="text-xs font-mono text-[#00f0ff]">{formatSol(feeInSol, 6)} SOL</div>
       </DataField>
 
       {/* Native Transfers */}
@@ -652,9 +689,7 @@ function TransactionDetail({ transaction }: { transaction: ParsedTransaction }) 
 
       {/* Slot */}
       <DataField label="BLOCK.SLOT">
-        <div className="text-xs font-mono text-[#8090a0]">
-          {transaction.slot.toLocaleString()}
-        </div>
+        <div className="text-xs font-mono text-[#8090a0]">{transaction.slot.toLocaleString()}</div>
       </DataField>
     </motion.div>
   );

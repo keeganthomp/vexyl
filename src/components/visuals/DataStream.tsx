@@ -119,7 +119,9 @@ export function DataStreamConnector({
 
   if (reducedMotion) {
     return (
-      <div className={`h-px bg-gradient-to-r from-transparent via-[${color}]/30 to-transparent ${className}`} />
+      <div
+        className={`h-px bg-gradient-to-r from-transparent via-[${color}]/30 to-transparent ${className}`}
+      />
     );
   }
 

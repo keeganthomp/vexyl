@@ -71,20 +71,12 @@ function DNAStrand() {
     <group ref={groupRef} position={[0, 0, 0]}>
       {/* Strand 1 - Soft teal */}
       <mesh geometry={strand1Geometry}>
-        <meshBasicMaterial
-          color={HELIX_COLORS.strand1}
-          transparent
-          opacity={0.6}
-        />
+        <meshBasicMaterial color={HELIX_COLORS.strand1} transparent opacity={0.6} />
       </mesh>
 
       {/* Strand 2 - Soft blue */}
       <mesh geometry={strand2Geometry}>
-        <meshBasicMaterial
-          color={HELIX_COLORS.strand2}
-          transparent
-          opacity={0.6}
-        />
+        <meshBasicMaterial color={HELIX_COLORS.strand2} transparent opacity={0.6} />
       </mesh>
 
       {/* Bridges - Animated */}
@@ -206,7 +198,7 @@ function HelixParticles({ offsetRef }: HelixParticlesProps) {
       const data = baseData[i];
 
       // Scroll downward
-      let t = data.t - (offsetRef.current * 0.05 * data.speed) % 1;
+      let t = data.t - ((offsetRef.current * 0.05 * data.speed) % 1);
       if (t < 0) t += 1;
 
       const y = (t - 0.5) * height;

@@ -124,10 +124,7 @@ export function CommandBar({
                   ? 'rgba(255, 96, 128, 0.4)'
                   : 'rgba(0, 240, 255, 0.15)'
             }`,
-            boxShadow:
-              validationState === 'valid'
-                ? '0 0 20px rgba(0, 240, 255, 0.15)'
-                : 'none',
+            boxShadow: validationState === 'valid' ? '0 0 20px rgba(0, 240, 255, 0.15)' : 'none',
           }}
         >
           {/* Corner accents */}
@@ -154,12 +151,7 @@ export function CommandBar({
             }}
           />
 
-          <div
-            className={cn(
-              'flex items-center gap-3',
-              isLanding ? 'px-5 py-4' : 'px-3 py-2'
-            )}
-          >
+          <div className={cn('flex items-center gap-3', isLanding ? 'px-5 py-4' : 'px-3 py-2')}>
             {/* Status Indicator */}
             <div className="flex-shrink-0">
               <AnimatePresence mode="wait">

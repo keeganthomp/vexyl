@@ -40,9 +40,7 @@ export async function getRecentBlockhash(): Promise<{
  * Simulate a transaction to check if it would succeed
  * Used to pre-filter accounts before batching
  */
-export async function simulateTransaction(
-  serializedTransaction: string
-): Promise<{
+export async function simulateTransaction(serializedTransaction: string): Promise<{
   success: boolean;
   error?: string;
 }> {
@@ -84,9 +82,7 @@ export async function simulateTransaction(
  * Get frozen token mints for a wallet
  * Returns set of mint addresses that are frozen and cannot be closed
  */
-export async function getFrozenTokenMints(
-  ownerAddress: string
-): Promise<{
+export async function getFrozenTokenMints(ownerAddress: string): Promise<{
   success: boolean;
   data?: string[];
   error?: string;
@@ -135,9 +131,7 @@ export async function getFrozenTokenMints(
 /**
  * Send a signed transaction from server (keeps API key private)
  */
-export async function sendTransaction(
-  serializedTransaction: string
-): Promise<{
+export async function sendTransaction(serializedTransaction: string): Promise<{
   success: boolean;
   signature?: string;
   error?: string;

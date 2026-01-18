@@ -5,15 +5,23 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { motion } from 'framer-motion';
 import { TransactionCard, TransactionCardSkeleton } from './TransactionCard';
 import { useTimelineTransactions } from '@/hooks/useTimeline';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 
 const CARD_HEIGHT = 72;
 const CARD_GAP = 8;
-const SPINE_WIDTH = 32;
+const SPINE_WIDTH_DESKTOP = 32;
+const SPINE_WIDTH_MOBILE = 16;
 
 // Minimal energy spine - pure CSS, matches our cyberpunk aesthetic
-function EnergySpine({ transactionCount }: { transactionCount: number }) {
+function EnergySpine({
+  transactionCount,
+  spineWidth,
+}: {
+  transactionCount: number;
+  spineWidth: number;
+}) {
   return (
-    <div style={{ width: SPINE_WIDTH }} className="relative h-full flex-shrink-0">
+    <div style={{ width: spineWidth }} className="relative h-full flex-shrink-0">
       {/* Main spine line */}
       <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2">
         {/* Core line */}
@@ -53,7 +61,8 @@ function EnergySpine({ transactionCount }: { transactionCount: number }) {
         className="absolute left-1/2 -translate-x-1/2 w-0.5 rounded-full pointer-events-none"
         style={{
           height: 40,
-          background: 'linear-gradient(to bottom, transparent, rgba(0, 240, 255, 0.3), transparent)',
+          background:
+            'linear-gradient(to bottom, transparent, rgba(0, 240, 255, 0.3), transparent)',
         }}
         animate={{
           top: ['0%', '100%'],
@@ -72,6 +81,8 @@ function EnergySpine({ transactionCount }: { transactionCount: number }) {
 export function InfiniteStream() {
   const { transactions, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage, error } =
     useTimelineTransactions();
+  const isMobile = useIsMobile();
+  const spineWidth = isMobile ? SPINE_WIDTH_MOBILE : SPINE_WIDTH_DESKTOP;
 
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -108,7 +119,7 @@ export function InfiniteStream() {
         <div className="absolute inset-0 overflow-hidden">
           <div className="flex">
             {/* Spine Skeleton */}
-            <div style={{ width: SPINE_WIDTH }} className="flex-shrink-0 relative">
+            <div style={{ width: spineWidth }} className="flex-shrink-0 relative">
               <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-[#00f0ff]/5 animate-pulse" />
             </div>
             {/* Cards */}
@@ -159,9 +170,7 @@ export function InfiniteStream() {
           <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#00f0ff]/20" />
           <div className="text-2xl mb-4 opacity-30">◇</div>
           <div className="text-[#8090a0] mb-2 text-sm font-mono">NO.TRANSACTIONS.FOUND</div>
-          <p className="text-xs text-[#506070] font-mono">
-            This wallet has no transaction history
-          </p>
+          <p className="text-xs text-[#506070] font-mono">This wallet has no transaction history</p>
         </div>
       </div>
     );
@@ -180,12 +189,15 @@ export function InfiniteStream() {
           {/* Energy Spine */}
           <div
             style={{
-              width: SPINE_WIDTH,
+              width: spineWidth,
               minHeight: totalHeight + 100,
               position: 'relative',
             }}
           >
-            <EnergySpine transactionCount={transactions.length + (isFetchingNextPage ? 2 : 0)} />
+            <EnergySpine
+              transactionCount={transactions.length + (isFetchingNextPage ? 2 : 0)}
+              spineWidth={spineWidth}
+            />
           </div>
 
           {/* Cards column */}

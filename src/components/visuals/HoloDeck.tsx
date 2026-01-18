@@ -3,6 +3,7 @@
 import { useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 
 // Minimal color palette
 const COLORS = {
@@ -144,12 +145,14 @@ function Scene() {
   );
 }
 
-// CSS-based glitch overlay - occasional, subtle
-function GlitchOverlay() {
+// CSS-based glitch overlay - occasional, subtle (disabled on mobile for performance)
+function GlitchOverlay({ disabled = false }: { disabled?: boolean }) {
   const [glitchActive, setGlitchActive] = useState(false);
   const [glitchIntensity, setGlitchIntensity] = useState(0);
 
   useEffect(() => {
+    if (disabled) return;
+
     // Random glitch bursts
     const triggerGlitch = () => {
       const shouldGlitch = Math.random() < 0.15; // 15% chance
@@ -158,17 +161,20 @@ function GlitchOverlay() {
         setGlitchIntensity(Math.random() * 0.5 + 0.2);
 
         // Short glitch duration
-        setTimeout(() => {
-          setGlitchActive(false);
-        }, 50 + Math.random() * 100);
+        setTimeout(
+          () => {
+            setGlitchActive(false);
+          },
+          50 + Math.random() * 100
+        );
       }
     };
 
     const interval = setInterval(triggerGlitch, 3000 + Math.random() * 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [disabled]);
 
-  if (!glitchActive) return null;
+  if (disabled || !glitchActive) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[100]" style={{ mixBlendMode: 'screen' }}>
@@ -234,7 +240,8 @@ function Vignette() {
     <div
       className="fixed inset-0 pointer-events-none z-[98]"
       style={{
-        background: 'radial-gradient(ellipse at center, transparent 0%, transparent 50%, rgba(0,0,0,0.4) 100%)',
+        background:
+          'radial-gradient(ellipse at center, transparent 0%, transparent 50%, rgba(0,0,0,0.4) 100%)',
       }}
     />
   );
@@ -245,9 +252,22 @@ interface HoloDeckProps {
   children?: React.ReactNode;
 }
 
+// CSS-only mobile background fallback
+function MobileBackground() {
+  return (
+    <div
+      className="absolute inset-0"
+      style={{
+        background: 'linear-gradient(180deg, #030608 0%, #050a12 50%, #0a1520 100%)',
+      }}
+    />
+  );
+}
+
 export function HoloDeck({ className, children }: HoloDeckProps) {
   const [isClient, setIsClient] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setIsClient(true);
@@ -268,6 +288,22 @@ export function HoloDeck({ className, children }: HoloDeckProps) {
     );
   }
 
+  // Mobile: Use CSS-only background for performance
+  if (isMobile) {
+    return (
+      <div className={className} style={{ position: 'relative' }}>
+        <MobileBackground />
+        <Vignette />
+        <NoiseOverlay />
+        {/* No GlitchOverlay on mobile - causes repaints */}
+
+        {/* UI Layer - z-index higher than overlays to ensure interactivity */}
+        <div style={{ position: 'relative', zIndex: 101, height: '100%' }}>{children}</div>
+      </div>
+    );
+  }
+
+  // Desktop: Full WebGL experience
   return (
     <div className={className} style={{ position: 'relative' }}>
       {/* Minimal WebGL Background */}
@@ -287,9 +323,7 @@ export function HoloDeck({ className, children }: HoloDeckProps) {
       <GlitchOverlay />
 
       {/* UI Layer */}
-      <div style={{ position: 'relative', zIndex: 10, height: '100%' }}>
-        {children}
-      </div>
+      <div style={{ position: 'relative', zIndex: 10, height: '100%' }}>{children}</div>
     </div>
   );
 }

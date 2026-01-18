@@ -41,7 +41,7 @@ function EnergyBeam({ height, scrollOffset }: { height: number; scrollOffset: nu
 
     for (let i = 0; i < pulseCount; i++) {
       // Pulses travel downward
-      const baseY = ((i / pulseCount) * height - height / 2);
+      const baseY = (i / pulseCount) * height - height / 2;
       const travelSpeed = 0.3;
       const cycleOffset = (time * travelSpeed + i * 0.5) % 2;
 
@@ -61,11 +61,7 @@ function EnergyBeam({ height, scrollOffset }: { height: number; scrollOffset: nu
       {/* Main spine line - very subtle */}
       <mesh ref={beamRef}>
         <planeGeometry args={[0.02, height]} />
-        <meshBasicMaterial
-          color="#0a1a2a"
-          transparent
-          opacity={0.8}
-        />
+        <meshBasicMaterial color="#0a1a2a" transparent opacity={0.8} />
       </mesh>
 
       {/* Glow layer */}
@@ -102,7 +98,7 @@ function EnergyBeam({ height, scrollOffset }: { height: number; scrollOffset: nu
 function NodeMarkers({
   transactionCount,
   nodeSpacing,
-  height
+  height,
 }: {
   transactionCount: number;
   nodeSpacing: number;
@@ -120,7 +116,7 @@ function NodeMarkers({
     const startY = height / 2 - 1;
 
     for (let i = 0; i < nodeCount; i++) {
-      const y = startY - (i * nodeSpacing * 0.018); // Scale to WebGL units
+      const y = startY - i * nodeSpacing * 0.018; // Scale to WebGL units
 
       dummy.position.set(0, y, 0);
       dummy.updateMatrix();
@@ -157,11 +153,7 @@ function NodeMarkers({
       {/* Node cores */}
       <instancedMesh ref={nodesRef} args={[undefined, undefined, nodeCount]}>
         <circleGeometry args={[0.04, 8]} />
-        <meshBasicMaterial
-          color="#00f0ff"
-          transparent
-          opacity={0.6}
-        />
+        <meshBasicMaterial color="#00f0ff" transparent opacity={0.6} />
       </instancedMesh>
     </group>
   );
@@ -170,7 +162,7 @@ function NodeMarkers({
 function Scene({
   height,
   scrollOffset,
-  transactionCount
+  transactionCount,
 }: {
   height: number;
   scrollOffset: number;
@@ -191,11 +183,7 @@ function Scene({
       <color attach="background" args={['#030608']} />
       <group ref={groupRef}>
         <EnergyBeam height={20} scrollOffset={scrollOffset} />
-        <NodeMarkers
-          transactionCount={transactionCount}
-          nodeSpacing={nodeSpacing}
-          height={20}
-        />
+        <NodeMarkers transactionCount={transactionCount} nodeSpacing={nodeSpacing} height={20} />
       </group>
     </>
   );
@@ -205,7 +193,7 @@ export function TimelineSpine({
   transactionCount,
   scrollOffset = 0,
   width = 40,
-  height
+  height,
 }: TimelineSpineProps) {
   const [isClient, setIsClient] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -236,11 +224,7 @@ export function TimelineSpine({
         gl={{ antialias: false, alpha: true, powerPreference: 'low-power' }}
         style={{ background: 'transparent' }}
       >
-        <Scene
-          height={height}
-          scrollOffset={scrollOffset}
-          transactionCount={transactionCount}
-        />
+        <Scene height={height} scrollOffset={scrollOffset} transactionCount={transactionCount} />
       </Canvas>
 
       {/* Top/bottom fade */}
@@ -259,7 +243,7 @@ export function TimelineSpine({
 // Alternative: Pure CSS version for even lighter weight
 export function TimelineSpineCSS({
   transactionCount,
-  width = 40
+  width = 40,
 }: {
   transactionCount: number;
   width?: number;
@@ -302,14 +286,31 @@ export function TimelineSpineCSS({
 
       <style jsx>{`
         @keyframes pulse {
-          0%, 100% { opacity: 0.3; transform: scale(1); }
-          50% { opacity: 0.6; transform: scale(1.2); }
+          0%,
+          100% {
+            opacity: 0.3;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.6;
+            transform: scale(1.2);
+          }
         }
         @keyframes travelDown {
-          0% { top: 0; opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { top: 100%; opacity: 0; }
+          0% {
+            top: 0;
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+          }
+          90% {
+            opacity: 1;
+          }
+          100% {
+            top: 100%;
+            opacity: 0;
+          }
         }
       `}</style>
     </div>

@@ -24,7 +24,8 @@ export function Sidebar() {
     <motion.aside
       className="w-[260px] h-screen flex flex-col relative overflow-hidden"
       style={{
-        background: 'linear-gradient(180deg, rgba(10, 20, 35, 0.95) 0%, rgba(5, 10, 18, 0.98) 100%)',
+        background:
+          'linear-gradient(180deg, rgba(10, 20, 35, 0.95) 0%, rgba(5, 10, 18, 0.98) 100%)',
         borderRight: '1px solid rgba(0, 240, 255, 0.1)',
       }}
     >
@@ -37,12 +38,16 @@ export function Sidebar() {
           <motion.div
             className="w-9 h-9 rounded flex items-center justify-center text-base font-bold relative flex-shrink-0"
             style={{
-              background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.2) 0%, rgba(60, 100, 140, 0.2) 100%)',
+              background:
+                'linear-gradient(135deg, rgba(0, 240, 255, 0.2) 0%, rgba(60, 100, 140, 0.2) 100%)',
               border: '1px solid rgba(0, 240, 255, 0.3)',
             }}
           >
             <span className="text-[#00f0ff]">V</span>
-            <div className="absolute inset-0 rounded" style={{ boxShadow: '0 0 15px rgba(0, 240, 255, 0.15)' }} />
+            <div
+              className="absolute inset-0 rounded"
+              style={{ boxShadow: '0 0 15px rgba(0, 240, 255, 0.15)' }}
+            />
           </motion.div>
           <div className="min-w-0">
             <div className="text-sm font-mono text-[#d0d8e0] tracking-wider">VEXYL</div>
@@ -75,9 +80,7 @@ export function Sidebar() {
                 />
               )}
               <div className="flex-1 min-w-0">
-                <div className="text-[9px] font-mono text-[#506070] tracking-widest">
-                  CONNECTED
-                </div>
+                <div className="text-[9px] font-mono text-[#506070] tracking-widest">CONNECTED</div>
                 <div className="text-xs font-mono text-[#00f0ff] truncate">
                   {truncateAddress(walletAddress, 4)}
                 </div>
@@ -88,7 +91,14 @@ export function Sidebar() {
                 className="text-[#506070] hover:text-[#00f0ff] transition-colors p-1"
                 title="Copy address"
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
                   <rect x="9" y="9" width="13" height="13" rx="2" />
                   <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                 </svg>
@@ -108,9 +118,21 @@ export function Sidebar() {
             PORTFOLIO.METRICS
           </div>
           <div className="grid grid-cols-2 gap-2">
-            <MetricCard label="SOL" value={isLoading ? null : formatSol(solBalance)} color="#14f195" />
-            <MetricCard label="USD" value={isLoading ? null : formatUsd(totalValueUsd)} color="#00f0ff" />
-            <MetricCard label="TOKENS" value={isLoading ? null : String(tokenCount)} color="#00f0ff" />
+            <MetricCard
+              label="SOL"
+              value={isLoading ? null : formatSol(solBalance)}
+              color="#14f195"
+            />
+            <MetricCard
+              label="USD"
+              value={isLoading ? null : formatUsd(totalValueUsd)}
+              color="#00f0ff"
+            />
+            <MetricCard
+              label="TOKENS"
+              value={isLoading ? null : String(tokenCount)}
+              color="#00f0ff"
+            />
             <MetricCard label="NFTS" value={isLoading ? null : String(nftCount)} color="#9945ff" />
           </div>
         </div>
@@ -118,9 +140,7 @@ export function Sidebar() {
 
       {/* Navigation */}
       <nav className="flex-1 p-4 min-h-0">
-        <div className="text-[9px] font-mono text-[#506070] tracking-widest mb-3">
-          NAVIGATION
-        </div>
+        <div className="text-[9px] font-mono text-[#506070] tracking-widest mb-3">NAVIGATION</div>
         <div className="space-y-1">
           {NAV_ITEMS.map((item) => (
             <motion.button
@@ -128,14 +148,13 @@ export function Sidebar() {
               onClick={() => setCurrentView(item.id)}
               className={cn(
                 'w-full flex items-center gap-3 px-3 py-2.5 rounded text-xs font-mono transition-all relative',
-                currentView === item.id
-                  ? 'text-[#00f0ff]'
-                  : 'text-[#8090a0] hover:text-[#d0d8e0]'
+                currentView === item.id ? 'text-[#00f0ff]' : 'text-[#8090a0] hover:text-[#d0d8e0]'
               )}
               style={{
-                background: currentView === item.id
-                  ? 'linear-gradient(90deg, rgba(0, 240, 255, 0.1), transparent)'
-                  : 'transparent',
+                background:
+                  currentView === item.id
+                    ? 'linear-gradient(90deg, rgba(0, 240, 255, 0.1), transparent)'
+                    : 'transparent',
               }}
               whileHover={{ x: 4 }}
               whileTap={{ scale: 0.98 }}
@@ -178,17 +197,26 @@ export function Sidebar() {
           </motion.button>
         )}
         <div className="mt-3 flex items-center justify-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#00f0ff]" style={{ boxShadow: '0 0 6px #00f0ff' }} />
-          <span className="text-[9px] font-mono text-[#506070] tracking-wider">
-            HELIUS.MAINNET
-          </span>
+          <div
+            className="w-1.5 h-1.5 rounded-full bg-[#00f0ff]"
+            style={{ boxShadow: '0 0 6px #00f0ff' }}
+          />
+          <span className="text-[9px] font-mono text-[#506070] tracking-wider">HELIUS.MAINNET</span>
         </div>
       </div>
     </motion.aside>
   );
 }
 
-function MetricCard({ label, value, color }: { label: string; value: string | null; color: string }) {
+function MetricCard({
+  label,
+  value,
+  color,
+}: {
+  label: string;
+  value: string | null;
+  color: string;
+}) {
   return (
     <div
       className="p-2 rounded relative"
@@ -197,9 +225,7 @@ function MetricCard({ label, value, color }: { label: string; value: string | nu
         border: '1px solid rgba(0, 240, 255, 0.08)',
       }}
     >
-      <div className="text-[9px] font-mono text-[#506070] tracking-wider">
-        {label}
-      </div>
+      <div className="text-[9px] font-mono text-[#506070] tracking-wider">{label}</div>
       <div className="text-xs font-mono mt-0.5" style={{ color }}>
         {value === null ? (
           <span className="inline-block w-8 h-3 rounded bg-[#00f0ff]/10 animate-pulse" />

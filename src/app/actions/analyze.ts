@@ -41,9 +41,7 @@ const WalletAnalysisSchema = z.object({
     concentration: z
       .enum(['highly_concentrated', 'concentrated', 'balanced', 'diversified'])
       .describe('How diversified the portfolio is'),
-    issues: z
-      .array(z.string())
-      .describe('1-3 issues with current portfolio composition'),
+    issues: z.array(z.string()).describe('1-3 issues with current portfolio composition'),
   }),
 
   // Growth recommendations
@@ -51,25 +49,32 @@ const WalletAnalysisSchema = z.object({
     approach: z
       .enum(['accumulate', 'rebalance', 'take_profits', 'reduce_risk', 'explore_new'])
       .describe('Recommended primary strategy'),
-    actions: z
-      .array(z.string())
-      .describe('2-4 specific actions to grow portfolio'),
+    actions: z.array(z.string()).describe('2-4 specific actions to grow portfolio'),
   }),
 
   // Market opportunities
-  opportunities: z.array(
-    z.object({
-      category: z
-        .enum(['defi', 'memecoin', 'infrastructure', 'gaming', 'ai', 'rwa', 'stablecoin', 'other'])
-        .describe('Category of opportunity'),
-      suggestion: z.string().describe('Specific opportunity or narrative to explore'),
-    })
-  ).describe('2-4 market opportunities based on their style and current trends'),
+  opportunities: z
+    .array(
+      z.object({
+        category: z
+          .enum([
+            'defi',
+            'memecoin',
+            'infrastructure',
+            'gaming',
+            'ai',
+            'rwa',
+            'stablecoin',
+            'other',
+          ])
+          .describe('Category of opportunity'),
+        suggestion: z.string().describe('Specific opportunity or narrative to explore'),
+      })
+    )
+    .describe('2-4 market opportunities based on their style and current trends'),
 
   // Warnings
-  warnings: z
-    .array(z.string())
-    .describe('Up to 3 red flags or concerns (empty if none)'),
+  warnings: z.array(z.string()).describe('Up to 3 red flags or concerns (empty if none)'),
 
   // Overall summary
   summary: z.string().describe('2-3 sentence overall assessment and key takeaway'),
@@ -121,7 +126,10 @@ Holdings:
 ${portfolio.holdings
   .sort((a, b) => b.valueUsd - a.valueUsd)
   .slice(0, 15)
-  .map((h) => `- ${h.symbol}: ${h.balance.toLocaleString()} ($${h.valueUsd.toFixed(2)}, ${h.percentOfPortfolio.toFixed(1)}%)`)
+  .map(
+    (h) =>
+      `- ${h.symbol}: ${h.balance.toLocaleString()} ($${h.valueUsd.toFixed(2)}, ${h.percentOfPortfolio.toFixed(1)}%)`
+  )
   .join('\n')}
 `
       : '';

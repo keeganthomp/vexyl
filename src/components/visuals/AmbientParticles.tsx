@@ -97,15 +97,14 @@ export function AmbientParticles({
         const pulseAlpha = p.alpha * (0.7 + Math.sin(p.pulse) * 0.3);
 
         // Draw glow
-        const gradient = ctx.createRadialGradient(
-          p.x,
-          p.y,
+        const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 4 * p.z);
+        gradient.addColorStop(
           0,
-          p.x,
-          p.y,
-          p.size * 4 * p.z
+          p.color +
+            Math.floor(pulseAlpha * 255)
+              .toString(16)
+              .padStart(2, '0')
         );
-        gradient.addColorStop(0, p.color + Math.floor(pulseAlpha * 255).toString(16).padStart(2, '0'));
         gradient.addColorStop(0.4, p.color + '40');
         gradient.addColorStop(1, 'transparent');
 
