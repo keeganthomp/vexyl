@@ -157,28 +157,41 @@ interface DustAccountProps {
   token: DASAsset;
   onSelect: (token: DASAsset) => void;
   selected: boolean;
+  isFrozen: boolean;
 }
 
-function DustAccount({ token, onSelect, selected }: DustAccountProps) {
+function DustAccount({ token, onSelect, selected, isFrozen }: DustAccountProps) {
   const metadata = token.content?.metadata;
   const symbol = metadata?.symbol || 'UNKNOWN';
   const value = token.token_info?.price_info?.total_price || 0;
 
   return (
     <motion.button
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={() => onSelect(token)}
+      whileHover={{ scale: isFrozen ? 1 : 1.02 }}
+      whileTap={{ scale: isFrozen ? 1 : 0.98 }}
+      onClick={() => !isFrozen && onSelect(token)}
       className={cn(
         'p-2 rounded text-left transition-all relative',
-        selected ? 'ring-1 ring-[#00f0ff]' : ''
+        selected && !isFrozen ? 'ring-1 ring-[#00f0ff]' : '',
+        isFrozen ? 'opacity-60 cursor-not-allowed' : ''
       )}
       style={{
-        background: selected ? 'rgba(0, 240, 255, 0.1)' : 'rgba(10, 20, 35, 0.4)',
-        border: '1px solid rgba(0, 240, 255, 0.1)',
+        background: isFrozen
+          ? 'rgba(255, 96, 128, 0.08)'
+          : selected
+            ? 'rgba(0, 240, 255, 0.1)'
+            : 'rgba(10, 20, 35, 0.4)',
+        border: isFrozen ? '1px solid rgba(255, 96, 128, 0.2)' : '1px solid rgba(0, 240, 255, 0.1)',
       }}
     >
-      {selected && <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#00f0ff]" />}
+      {isFrozen && (
+        <div className="absolute top-1 right-1 px-1 py-0.5 rounded text-[7px] font-mono font-bold bg-[#ff6080]/20 text-[#ff6080]">
+          FROZEN
+        </div>
+      )}
+      {selected && !isFrozen && (
+        <div className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#00f0ff]" />
+      )}
       <div className="text-xs font-medium text-[#d0d8e0] truncate">{symbol}</div>
       <div className="text-[10px] text-[#506070] font-mono">
         {value > 0 ? formatUsd(value) : 'No value'}
@@ -463,9 +476,9 @@ export function PortfolioView() {
     null
   );
 
-  const { tokens, dustAccounts, totalTokenValue, solValue } = useMemo(() => {
+  const { tokens, dustAccounts, frozenDustMints, totalTokenValue, solValue } = useMemo(() => {
     if (!assets) {
-      return { tokens: [], dustAccounts: [], totalTokenValue: 0, solValue: 0 };
+      return { tokens: [], dustAccounts: [], frozenDustMints: new Set<string>(), totalTokenValue: 0, solValue: 0 };
     }
 
     const solVal = assets.nativeBalance.total_price || 0;
@@ -473,6 +486,7 @@ export function PortfolioView() {
     // Separate valuable tokens from dust
     const valuable: DASAsset[] = [];
     const dust: DASAsset[] = [];
+    const frozenDust = new Set<string>();
     let tokenVal = 0;
 
     for (const token of assets.tokens) {
@@ -480,12 +494,15 @@ export function PortfolioView() {
       tokenVal += value;
 
       // Consider "dust" as tokens worth less than $1
-      // Exclude frozen accounts (from RPC check) - they can't be closed
-      // Also exclude already-closed mints (real-time update)
+      // Track frozen accounts - they can't be closed but we show them with a tag
+      // Exclude already-closed mints (real-time update)
       const isFrozen = frozenMints?.has(token.id) || token.ownership?.frozen;
       if (value < 1) {
-        if (!isFrozen && !closedMints.has(token.id)) {
+        if (!closedMints.has(token.id)) {
           dust.push(token);
+          if (isFrozen) {
+            frozenDust.add(token.id);
+          }
         }
       } else {
         valuable.push(token);
@@ -495,6 +512,7 @@ export function PortfolioView() {
     return {
       tokens: valuable,
       dustAccounts: dust,
+      frozenDustMints: frozenDust,
       totalTokenValue: tokenVal,
       solValue: solVal,
     };
@@ -516,11 +534,14 @@ export function PortfolioView() {
     });
   };
 
+  // Get closeable (non-frozen) dust accounts
+  const closeableDust = dustAccounts.filter((t) => !frozenDustMints.has(t.id));
+
   const handleSelectAllDust = () => {
-    if (activeSelectedDust.size === dustAccounts.length && dustAccounts.length > 0) {
+    if (activeSelectedDust.size === closeableDust.length && closeableDust.length > 0) {
       setSelectedDust(new Set());
     } else {
-      setSelectedDust(new Set(dustAccounts.map((t) => t.id)));
+      setSelectedDust(new Set(closeableDust.map((t) => t.id)));
     }
   };
 
@@ -564,8 +585,10 @@ export function PortfolioView() {
     setTimeout(() => setCloseResult(null), 5000);
   };
 
-  // Filter out closed mints from selection
-  const activeSelectedDust = new Set(Array.from(selectedDust).filter((id) => !closedMints.has(id)));
+  // Filter out closed and frozen mints from selection
+  const activeSelectedDust = new Set(
+    Array.from(selectedDust).filter((id) => !closedMints.has(id) && !frozenDustMints.has(id))
+  );
 
   const reclaimableSOL = activeSelectedDust.size * 0.00203928;
 
@@ -778,16 +801,22 @@ export function PortfolioView() {
                 <div>
                   <div className="text-[10px] font-mono text-[#ff9040] tracking-widest">
                     DUST.ACCOUNTS ({dustAccounts.length})
+                    {frozenDustMints.size > 0 && (
+                      <span className="text-[#ff6080] ml-1">
+                        ({frozenDustMints.size} frozen)
+                      </span>
+                    )}
                   </div>
                   <div className="text-[9px] font-mono text-[#506070] mt-0.5">
-                    Reclaim ~{formatSol(dustAccounts.length * 0.002)} SOL
+                    Reclaim ~{formatSol(closeableDust.length * 0.002)} SOL
                   </div>
                 </div>
                 <button
                   onClick={handleSelectAllDust}
-                  className="text-[10px] font-mono text-[#ff9040] hover:text-[#ffb060] transition-colors px-2 py-1 rounded bg-[#ff9040]/10"
+                  disabled={closeableDust.length === 0}
+                  className="text-[10px] font-mono text-[#ff9040] hover:text-[#ffb060] transition-colors px-2 py-1 rounded bg-[#ff9040]/10 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {activeSelectedDust.size === dustAccounts.length && dustAccounts.length > 0
+                  {activeSelectedDust.size === closeableDust.length && closeableDust.length > 0
                     ? 'DESELECT'
                     : 'SELECT.ALL'}
                 </button>
@@ -801,6 +830,7 @@ export function PortfolioView() {
                       token={token}
                       onSelect={handleSelectDust}
                       selected={activeSelectedDust.has(token.id)}
+                      isFrozen={frozenDustMints.has(token.id)}
                     />
                   ))}
                 </div>
