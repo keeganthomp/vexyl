@@ -87,7 +87,7 @@ function MobileDashboard() {
 // Mobile Timeline View (simplified header)
 function MobileTimelineView() {
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col" style={{ backgroundColor: '#030608' }}>
       {/* Simplified Header */}
       <div className="flex items-center gap-3 px-4 py-3 flex-shrink-0">
         <span className="text-[#00f0ff] text-xs font-mono tracking-widest">TIMELINE</span>
@@ -186,7 +186,7 @@ function DesktopDashboard() {
 
 function TimelineView() {
   return (
-    <div className="flex-1 flex flex-col overflow-hidden p-6">
+    <div className="flex-1 flex flex-col overflow-hidden p-6" style={{ backgroundColor: '#030608' }}>
       {/* Header with HUD styling */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
