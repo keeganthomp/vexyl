@@ -115,7 +115,7 @@ export function InfiniteStream() {
   // Initial loading state
   if (isLoading) {
     return (
-      <div className="relative h-full flex-1">
+      <div className="relative h-full flex-1" style={{ backgroundColor: '#030608' }}>
         <div className="absolute inset-0 overflow-hidden">
           <div className="flex">
             {/* Spine Skeleton */}
@@ -138,7 +138,7 @@ export function InfiniteStream() {
   // Error state
   if (error) {
     return (
-      <div className="relative h-full flex-1 flex items-center justify-center">
+      <div className="relative h-full flex-1 flex items-center justify-center" style={{ backgroundColor: '#030608' }}>
         <div
           className="p-8 text-center max-w-md rounded relative"
           style={{
@@ -158,7 +158,7 @@ export function InfiniteStream() {
   // Empty state
   if (transactions.length === 0) {
     return (
-      <div className="relative h-full flex-1 flex items-center justify-center">
+      <div className="relative h-full flex-1 flex items-center justify-center" style={{ backgroundColor: '#030608' }}>
         <div
           className="p-8 text-center max-w-md rounded relative"
           style={{
@@ -181,7 +181,7 @@ export function InfiniteStream() {
   const totalHeight = virtualizer.getTotalSize() + loadingHeight;
 
   return (
-    <div className="relative h-full flex-1">
+    <div className="relative h-full flex-1" style={{ backgroundColor: '#030608' }}>
       {/* Scrollable container */}
       <div ref={parentRef} className="absolute inset-0 overflow-auto hide-scrollbar">
         {/* Container with Spine + Cards layout */}
